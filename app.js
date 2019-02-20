@@ -16,6 +16,17 @@ app.use('/js', express.static(path.join(__dirname, '/node_modules/jquery')));
 app.set('views', './src/views');
 app.set('view engine', 'ejs');
 
+bookRouter.route('/books')
+.get((req, res) => {
+    res.send('Hello Books');
+});
+
+bookRouter.route('/single')
+.get((req, res) => {
+    res.send('Hello single Book');
+});
+
+app.use('/books', bookRouter);
 app.get('/', (req, res) => {
     res.render('index', 
     {
