@@ -1,42 +1,44 @@
-const express = require('express')
+const express = require('express');
 const debug = require('debug')('app')
-const path = require('path')
-const chalk = require('chalk')
+const path = require('path');
+const chalk = require('chalk');
+
+const app = express()
+const port = process.env.port || 3000
 
 
+app.use(express.static(path.join(__dirname, '/public/')))
+app.use(
+  '/css',
+  express.static(path.join(__dirname, '/node_modules/bootstrap/dist/css'))
+)
+app.use(
+  '/js',
+  express.static(path.join(__dirname, '/node_modules/bootstrap/dist/js'))
+)
+app.use('/js', express.static(path.join(__dirname, '/node_modules/jquery')))
+app.set('views', './src/views')
+app.set('view engine', 'ejs')
 
-const port = process.env.port || 3000;
-const app = express();
-const bookRouter = express.Router();
+const nav =  [
+    { link: '/books', title: 'Book' },
+    { link: '/authors', title: 'Author' }
+  ];
 
-app.use(express.static(path.join(__dirname, '/public/')));
-app.use('/css', express.static(path.join(__dirname, '/node_modules/bootstrap/dist/css')))
-app.use('/js', express.static(path.join(__dirname, '/node_modules/bootstrap/dist/js')));
-app.use('/js', express.static(path.join(__dirname, '/node_modules/jquery')));
-app.set('views', './src/views');
-app.set('view engine', 'ejs');
+const bookRouter = require('./src/routes/bookRoutes')(nav);
 
-bookRouter.route('/books')
-.get((req, res) => {
-    res.send('Hello Books');
-});
 
-bookRouter.route('/single')
-.get((req, res) => {
-    res.send('Hello single Book');
-});
-
-app.use('/books', bookRouter);
+app.use('/books', bookRouter)
 app.get('/', (req, res) => {
-    res.render('index', 
-    {
-        nav: [{link: '/books', title:'Books'},
-          {link: '/authors', title:'Authors'}],
-        title: 'Library'
-    }
-  );
-});
+  res.render('index', {
+    nav: [
+      { link: '/books', title: 'Books' },
+      { link: '/authors', title: 'Authors' }
+    ],
+    title: 'Library'
+  })
+})
 
 app.listen(port, function () {
-    debug(`listening on port ${chalk.green(port)}`);
+  debug(`listening on port ${chalk.green(port)}`)
 })
