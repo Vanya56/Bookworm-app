@@ -3,12 +3,21 @@ const debug = require('debug')('app')
 const path = require('path');
 const chalk = require('chalk');
 const bodyParser = require('body-parser');
+const passport = require('passport');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+
 
 const app = express()
 const port = process.env.port || 3000
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(cookieParser());
+app.use(session({ secret: 'Library' }));
+
+require('./src/config/passport.js')(app);
+
 app.use(express.static(path.join(__dirname, '/public/')))
 app.use('/css',express.static(path.join(__dirname, '/node_modules/bootstrap/dist/css')))
 app.use('/js',express.static(path.join(__dirname, '/node_modules/bootstrap/dist/js')))
