@@ -8,6 +8,27 @@ const authRouter = express.Router();
 function router() {
     authRouter.route('/signUp')
         .post((req, res) => {
+            const { username, password } = req.body;
+            const url = 'mongodb://localhost:27017';
+            const dbName = 'LibraryApp';
+
+            (async function addUser() {
+                let client;
+                try{
+                    client = await MongoClient.connect(url);
+                    console.log('You connected to the server!');
+
+                    const db = client.db(dbName);
+                    const col = db.collection('users');
+                    const user = { username, password };
+                    const results = await col.insertOne(user);
+                    console.log(results);
+                    
+                } catch(err) {
+                    console.log(err);
+                    
+                }
+            }());
             debug(req.body);
             // Create user
             req.login(req.body,() => {

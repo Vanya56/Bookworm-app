@@ -2,7 +2,8 @@ const express = require('express');
 const bookRouter = express.Router();
 
 function router(nav) {
-    const books = [{
+    const books = [
+        {
             title: 'Shadow of the Wind',
             genere: 'fiction',
             author: 'Carlos Ruiez Zaffon',

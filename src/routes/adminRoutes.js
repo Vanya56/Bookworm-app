@@ -36,7 +36,7 @@ const books = [{
 function router(nav) {
     adminRouter.route('/')
         .get((req, res) => {
-            const url = 'mongo://localhost:27017';
+            const url = 'mongodb://localhost:27017';
             const dbName = 'LibraryApp';
 
             (async function mongo() {
