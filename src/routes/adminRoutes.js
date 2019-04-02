@@ -1,63 +1,85 @@
 const express = require('express');
-const { mongoClient } = require('mongodb');
-const debug = require('debug')('app:adminRoutes');
+const {
+  MongoClient
+} = require('mongodb');
 
 const adminRouter = express.Router();
 const books = [{
-    title: 'Shadow of the Wind',
-    genere: 'fiction',
-    author: 'Carlos Ruiez Zaffon',
+    title: 'War and Peace',
+    genre: 'Historical Fiction',
+    author: 'Lev Nikolayevich Tolstoy',
     read: false
-
-},
-{
-    title: 'Blood Meridian',
-    genere: 'fiction',
-    author: 'Cormac McCarthy',
+  },
+  {
+    title: 'Les Misérables',
+    genre: 'Historical Fiction',
+    author: 'Victor Hugo',
     read: false
-
-},
-{
-    title: 'Churchill',
-    genere: 'History',
-    author: 'somebody',
+  },
+  {
+    title: 'The Time Machine',
+    genre: 'Science Fiction',
+    author: 'H. G. Wells',
     read: false
-
-},
-{
-    title: 'The Devil in the White City',
-    genere: 'Historical Fiction',
-    author: 'Somebody',
+  },
+  {
+    title: 'A Journey into the Center of the Earth',
+    genre: 'Science Fiction',
+    author: 'Jules Verne',
     read: false
-
-}
+  },
+  {
+    title: 'The Dark World',
+    genre: 'Fantasy',
+    author: 'Henry Kuttner',
+    read: false
+  },
+  {
+    title: 'The Wind in the Willows',
+    genre: 'Fantasy',
+    author: 'Kenneth Grahame',
+    read: false
+  },
+  {
+    title: 'Life On The Mississippi',
+    genre: 'History',
+    author: 'Mark Twain',
+    read: false
+  },
+  {
+    title: 'Childhood',
+    genre: 'Biography',
+    author: 'Lev Nikolayevich Tolstoy',
+    read: false
+  }
 ];
 
+
 function router(nav) {
-    adminRouter.route('/')
-        .get((req, res) => {
-            const url = 'mongodb://localhost:27017';
-            const dbName = 'LibraryApp';
+  adminRouter.route('/')
+    .get((req, res) => {
+      const url = 'mongodb://localhost:27017';
+      const dbName = 'LibraryApp';
 
-            (async function mongo() {
-                let client;
-                try {
-                    client = await mongoClient.connect(url);
-                    debug('Connected to server');
+      (async function mongo() {
+        let client;
+        try {
+          client = await MongoClient.connect(url);
+          console.log('Connected to server!');
 
-                    const db = client.db(dbName);
+          const db = client.db(dbName);
 
-                    const response = await db.collection('books').insertMany(books);
-                    res.json(response);
-                }   catch (err) {
-                    debug(err.stack)
+          const response = await db.collection('books').insertMany(books);
+          res.json(response);
+        } catch (err) {
+          console.log(err.stack);
 
-                }
-                client.close();
-            }());
-        });
-    return adminRouter;
 
+        }
+        client.close();
+      }());
+    });
+  return adminRouter;
 }
 
 module.exports = router;
