@@ -1,7 +1,5 @@
 const express = require('express');
-const {
-  MongoClient
-} = require('mongodb');
+const { MongoClient } = require('mongodb');
 
 const adminRouter = express.Router();
 const books = [{
