@@ -1,4 +1,5 @@
 const express = require('express');
+const passport = require('passport');
 const {
     MongoClient
 } = require('mongodb');
@@ -30,7 +31,7 @@ function router(nav) {
                     };
                     const results = await col.insertOne(user);
                     console.log(results);
-                    req.login(results.opps[0], () => {
+                    req.login(results.ops[0], () => {
                         res.redirect('/auth/profile')
                     });
 
@@ -46,7 +47,18 @@ function router(nav) {
                 title: 'sign in'
             });
         })
+        .post(passport.authenticate('local', {
+            successRedirect: '/auth/profile',
+            falureRedirect: '/'
+        }));
     authRouter.route('/profile')
+        .all((req, res, next) => {
+            if (req.user) {
+                next();
+            } else {
+                res.redirect('/');
+            }
+        })
         .get((req, res) => {
             res.json(req.user);
         });

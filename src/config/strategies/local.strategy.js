@@ -19,7 +19,6 @@ module.exports = function localStrategy() {
 
           console.log('Connected correctly to server');
          
-
           const db = client.db(dbName);
           const col = db.collection('users');
 
