@@ -17,7 +17,8 @@ module.exports = function localStrategy() {
         try {
           client = await MongoClient.connect(url);
 
-          debug('Connected correctly to server');
+          console.log('Connected correctly to server');
+         
 
           const db = client.db(dbName);
           const col = db.collection('users');

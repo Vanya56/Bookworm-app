@@ -15,5 +15,4 @@ module.exports = function passportConfig(app) {
     done(null, user);
   });
 
-
 };
