@@ -4,7 +4,7 @@ const {
 } = require('mongodb');
 
 
-function bookController(nav) {
+function bookController(bookService, nav) {
     function getIndex(req, res) {
         const url = 'mongodb://localhost:27017';
         const dbName = 'LibraryApp';
@@ -56,6 +56,7 @@ function bookController(nav) {
                 });
                 console.log(book);
 
+                book.details = await bookService.getBookById(book.bookId);
                 res.render(
                     'bookView', {
                         nav,
@@ -70,20 +71,24 @@ function bookController(nav) {
 
         }());
     }
-function middleweare (req, res, next) {
-    // if (req.user) {
-      next();
-  // } else {
-  //     res.redirect('/');
-  // }
-}
-    
+
+    function middleweare(req, res, next) {
+        // if (req.user) {
+        next();
+        // } else {
+        //     res.redirect('/');
+        // }
+    }
+
     return {
         getIndex,
         getById,
         middleweare
     }
 };
+
+// key: cMzFpzls6uuUy6aUB5IwOQ
+// secret: efAz4flbMZCKvGbEhWZWgQQdN90oL5AoabHUvkjnqc
 
 
 
