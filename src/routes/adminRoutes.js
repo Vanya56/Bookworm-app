@@ -55,6 +55,15 @@ const books = [{
 ];
 
 
+const uri = "mongodb+srv://ivan56:Rolex2152!@cluster0-rlxr7.mongodb.net/test?retryWrites=true";
+const client = new MongoClient(uri, { useNewUrlParser: true });
+client.connect(err => {
+  const collection = client.db("test").collection("devices");
+  // perform actions on the collection object
+  client.close();
+});
+
+
 function router(nav) {
   adminRouter.route('/')
     .get((req, res) => {
